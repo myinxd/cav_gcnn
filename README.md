@@ -9,7 +9,12 @@ In this repo, we provide a toolbox namely `cav_gcnn` to detect cavities in the X
 ## Usage
 To utilize our toolbox to cavity detections, a granular cnn model should be trained in advance and saved. Then, cavities in the new observations can be detected and marked with elliptical markers after prepocessing on the raw image data. In this work, 40 observations of 40 different objects were applied to train our GCNN model, and a [snap](https://github.com/myinxd/cav_gcnn/blob/master/samples/samples.png) of them is illustrated.
 
-If you want to see the details of preprocessing and usage of our script, please refer to our paper<TODO> and the python codes. 
+If you want to see the details of preprocessing and usage of our script, please refer to our paper<TODO> and the python codes. And the installation of the toolbox is as follows,
+
+```sh
+$ cd cav_gcnn
+$ <sudo> pip install <--user> . 
+```
 
 ## Requirements
 To process our scripts, some python packages are required, which are listed as follows.
