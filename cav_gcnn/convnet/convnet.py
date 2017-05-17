@@ -12,14 +12,13 @@ Reference
     http://pythonhosted.org/nolearn/lasagne.html
 """
 
-import numpy as np
 import lasagne
-import theano.tensor as T
 # from lasagne.layers import get_output
 from lasagne.layers import DropoutLayer
 from lasagne.layers import InputLayer, DenseLayer
 from lasagne.layers import Conv2DLayer, MaxPool2DLayer
 from nolearn.lasagne import NeuralNet, BatchIterator
+
 
 class ConvNet():
     """
@@ -52,9 +51,9 @@ class ConvNet():
     cnn_save: save the network
     """
 
-    def __init__(self, X_in=None, X_out=None, numclass=3, kernel_size=[2,3,4],
-                 kernel_num=[15,15,15], pool_flag=[False,False,False],
-                fc_nodes=None):
+    def __init__(self, X_in=None, X_out=None, numclass=3, kernel_size=[2, 3, 4],
+                 kernel_num=[15, 15, 15], pool_flag=[False, False, False],
+                 fc_nodes=None):
         """
         The initializer
         """
@@ -67,12 +66,12 @@ class ConvNet():
         self.pool_size = 2
         self.fc_nodes = fc_nodes
 
-    def gen_BatchIterator(self,batch_size=100, shuffle=True):
+    def gen_BatchIterator(self, batch_size=100, shuffle=True):
         """Generate the batch iterator"""
         B = BatchIterator(batch_size=batch_size, shuffle=shuffle)
         return B
 
-    def gen_layers(self):
+    def gen_layers(self, droprate=0.5):
         """Construct the layers"""
 
         # Init <TODO>
@@ -85,11 +84,11 @@ class ConvNet():
                               self.X_in.shape[3])})
         self.layers.append(l_input)
         # Conv and pool layers
-        rows,cols = self.X_in.shape[2:]
+        rows, cols = self.X_in.shape[2:]
         for i in range(len(self.kernel_size)):
             # conv
             l_conv = (Conv2DLayer,
-                         {'num_filters': self.kernel_num[i],
+                      {'num_filters': self.kernel_num[i],
                           'filter_size': self.kernel_size[i],
                           'nonlinearity': lasagne.nonlinearities.rectify,
                           'W': lasagne.init.GlorotUniform(),
@@ -100,12 +99,12 @@ class ConvNet():
             # pool
             if self.pool_flag[i]:
                 l_pool = (MaxPool2DLayer,
-                             {'pool_size': self.pool_size})
+                          {'pool_size': self.pool_size})
                 self.layers.append(l_pool)
                 rows = rows // 2
                 cols = cols // 2
         # dropout
-        l_drop = (DropoutLayer, {'p': 0.5})
+        l_drop = (DropoutLayer, {'p': droprate})
         # self.layers.append(l_drop)
         # full connected layer
         num_fc = rows * cols * self.kernel_num[-1]
@@ -125,20 +124,10 @@ class ConvNet():
         # output layer
         self.layers.append(l_drop)
         l_out = (DenseLayer,
-                {'name': 'output',
-                 'num_units': self.numclass,
-                 'nonlinearity': lasagne.nonlinearities.softmax})
+                 {'name': 'output',
+                  'num_units': self.numclass,
+                  'nonlinearity': lasagne.nonlinearities.softmax})
         self.layers.append(l_out)
-
-    def gen_loss(self):
-        """Define the loss function, in this work, 
-           the cross_entropy is utlized."""
-        input_var = T.tensor4('inputs')
-        target_var = T.ivector('targets')
-        # Create the loss expression for training
-        prediction = lasagne.layers.get_output(self.net.layers)
-        loss = lasagne.objectives.categorical_crossentropy(prediction, target_var)
-        loss = loss.mean()
 
     def cnn_build(self, max_epochs=20, batch_size=100,
                   learning_rate=0.001, momentum=0.9,
@@ -146,25 +135,25 @@ class ConvNet():
         """Build the network"""
         if batch_size is None:
             self.net = NeuralNet(
-                layers = self.layers,
-                max_epochs = max_epochs,
+                layers=self.layers,
+                max_epochs=max_epochs,
                 update=lasagne.updates.nesterov_momentum,
-                update_learning_rate = learning_rate,
-                update_momentum = momentum,
-                regression = False,
-                verbose = verbose)
+                update_learning_rate=learning_rate,
+                update_momentum=momentum,
+                regression=False,
+                verbose=verbose)
         else:
             # batch iterator
             batch_iterator = self.gen_BatchIterator(batch_size=batch_size)
             self.net = NeuralNet(
-                layers = self.layers,
-                batch_iterator_train = batch_iterator,
-                max_epochs = max_epochs,
+                layers=self.layers,
+                batch_iterator_train=batch_iterator,
+                max_epochs=max_epochs,
                 update=lasagne.updates.nesterov_momentum,
-                update_learning_rate = learning_rate,
-                update_momentum = momentum,
-                regression = False,
-                verbose = verbose)
+                update_learning_rate=learning_rate,
+                update_momentum=momentum,
+                regression=False,
+                verbose=verbose)
 
     def cnn_train(self):
         """Train the cae net"""
@@ -179,7 +168,7 @@ class ConvNet():
         from nolearn.lasagne.visualize import plot_loss
         plot_loss(self.net)
 
-    def cnn_predict(self,img):
+    def cnn_predict(self, img):
         """
         Predict the output of the input image
 
@@ -199,17 +188,17 @@ class ConvNet():
         elif len(img.shape) == 3:
             rows = img.shape[1]
             cols = img.shape[2]
-            img = img.reshape(img.shape[0],1,rows,cols)
+            img = img.reshape(img.shape[0], 1, rows, cols)
         elif len(img.shape) == 2:
-            rows,cols = img.shape
-            img = img.reshape(1,1,rows,cols)
+            rows, cols = img.shape
+            img = img.reshape(1, 1, rows, cols)
         else:
             print("The shape of image should be 2 or 3 d")
         label_pred = self.net.predict(img)
 
         return label_pred
 
-    def cnn_save(self,savepath='cnn.pkl'):
+    def cnn_save(self, savepath='cnn.pkl'):
         """Save the trained network
 
         input
@@ -217,7 +206,7 @@ class ConvNet():
         savepath: str
             Path of the net to be saved
         """
-        import sys   
+        import sys
         sys.setrecursionlimit(1000000)
         import pickle
         fp = open(savepath, 'wb')
