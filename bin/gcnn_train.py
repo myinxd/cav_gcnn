@@ -66,7 +66,7 @@ def main():
     bkg_label = y_train['bkg']
 
 
-    for i in range(5):
+    for i in range(numgra):
         print("Training granular %d of %d..." % (i + 1, numgra))
         data_train = np.row_stack((bkg_data[0 + i::numgra, ],
                                    cav_data, cav_data, ext_data))
