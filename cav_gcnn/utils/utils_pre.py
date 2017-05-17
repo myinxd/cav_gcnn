@@ -4,13 +4,15 @@
 A script to preprocess the raw data fetched from Chandra Data Archive (CDA)
 
 The processing steps are as follows
-1. Get field of view (FOV) from the fov1.fits file, the CCD_ID is set as 7 as the default
-2. Get evt2_sub.fits by dmcopying from the evt2.fits according to the fov_sub.fits
+1. Get field of view (FOV) from the fov1.fits file, the CCD_ID is set as 7 as
+the default
+2. Get evt2_sub.fits by dmcopying from the evt2.fits according to the
+fov_sub.fits
 3. Detect point sources by wavdetect, and save the region files
 4. Mannually filter the point sources
 5. Fill the point sources with dmfilth
 6. Locate center of the galaxy or cluster, output as a region file
-7. Get the 400x400 cut image from the evt2_sub.fits
+7. Get the 200x200 cut image from the evt2_sub.fits
 
 References
 ==========
@@ -36,7 +38,7 @@ get_img(obspath)
 """
 
 import os
-# from astropy.io import fits
+from astropy.io import fits
 import numpy as np
 
 
@@ -66,10 +68,8 @@ def get_sub(obspath, ccd_id='7'):
     os.system("dmcopy '%s[ccd_id=%s]' %s clobber=yes" %
               (fov_path, ccd_id, fov_sub_path))
     # get sub evt2
-    print("dmcopy '%s[energy=500:7000,ccd_id=%s,sky=region(%s)][bin sky=1]' %s clobber=yes" % (
-        evt_path, ccd_id, fov_sub_path, evt_sub_path))
-    os.system("dmcopy '%s[energy=500:7000,ccd_id=%s,sky=region(%s)][bin sky=1]' %s clobber=yes" % (
-        evt_path, ccd_id, fov_sub_path, evt_sub_path))
+    print("dmcopy '%s[energy=500:7000,ccd_id=%s,sky=region(%s)][bin sky=1]' %s clobber=yes" % (evt_path, ccd_id, fov_sub_path, evt_sub_path))
+    os.system("dmcopy '%s[energy=500:7000,ccd_id=%s,sky=region(%s)][bin sky=1]' %s clobber=yes" % (evt_path, ccd_id, fov_sub_path, evt_sub_path))
 
 
 def get_ps(obspath, pspath="wavd", evtname='evt2_sub.fits'):

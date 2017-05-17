@@ -1,7 +1,9 @@
 # Copyright (C) 2017 Zhixian MA <zxma_sjtu@qq.com>
 
 """
-This script generates a convolutional neural network based classifier to detect X-ray astronomical cavities.
+This script generates a convolutional neural network based classifier to
+detect X-ray astronomical cavities.
+
 The codes are written under the structure designed by Theano and Lasagne.
 
 Note
@@ -34,6 +36,7 @@ import scipy.io as sio
 # import theano.tensor as T
 # import lasagne
 from ConvNet import ConvNet
+
 
 def load_data(inpath, ratio_train=0.8, ratio_val=0.2):
     """
@@ -223,6 +226,7 @@ def cnn_load(modelpath):
     fp.close()
 
     return model
+
 
 def get_assess(img_mask, img_re):
     """

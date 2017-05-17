@@ -164,7 +164,8 @@ def reg_recover(regpath, rate, unit='kpc'):
 
 def gen_sample(img, img_mark, rate=0.5, boxsize=10, px_over=5):
     """
-    Generate samples by splitting the pixel classified image with provided     boxsize
+    Generate samples by splitting the pixel classified image with
+    provided boxsize
 
     Input
     -----
@@ -217,7 +218,8 @@ def gen_sample(img, img_mark, rate=0.5, boxsize=10, px_over=5):
 
 def gen_sample_multi(img, img_mark, rate=0.2, boxsize=10, px_over=5):
     """
-    Generate samples by splitting the pixel classified image with provided boxsize
+    Generate samples by splitting the pixel classified image with
+    provided boxsize
 
     Input
     -----
@@ -374,6 +376,7 @@ def get_mark(imgpath, cav_mat, savepath=None):
         imsave(savepath, np.flipud(img_mark))
 
     return img_mark
+
 
 def get_mark_multi(betapath, cav_mat, thrs=0.1, logflag=False, savepath=None):
     """
@@ -547,9 +550,9 @@ def cav_edge(img, sigma):
         teh edge detected image
     """
     # Reprocess of the image
-    #idx = np.where(img >= 1)
+    # idx = np.where(img >= 1)
     img_re = img
-    #img_re[idx] = 1
+    # img_re[idx] = 1
     # Edge detect
     edge = feature.canny(img_re, sigma=sigma)
     # bool to integer
@@ -558,7 +561,8 @@ def cav_edge(img, sigma):
     return img_edge
 
 
-def cav_locate(img_edge, obspath=None, cntpath='cnt.reg', regpath='cav_det.reg', rate=0.8):
+def cav_locate(img_edge, obspath=None, cntpath='cnt.reg',
+               regpath='cav_det.reg', rate=0.8):
     """
     Locate cavities in the edge detected image
 
