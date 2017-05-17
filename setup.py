@@ -15,11 +15,12 @@ from setuptools import setup, find_packages
 
 import cav_gcnn as pkg
 
+
 def read(filename):
-    return open(os.path.join(os.path.dirname(__file__),filename)).read()
+    return open(os.path.join(os.path.dirname(__file__), filename)).read()
 
 # Check python version
-if sys.version_info < (3,4):
+if sys.version_info < (3, 4):
     sys.exit("Python >= 3.4 is required...")
 
 setup(
@@ -44,10 +45,10 @@ setup(
         "Programming Language :: Python :: 3.5",
         "Topic :: Scientific/Engineering :: Image Recognition ",
     ],
-    packages=find_packages(exclude=["docs","tests"]),
+    packages=find_packages(exclude=["docs", "tests"]),
     scripts=[
         "bin/gcnn_train",
-        "bin/gcnn_test",
+        "bin/gcnn_detect",
     ],
     install_requires=[
         "numpy",
