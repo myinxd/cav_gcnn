@@ -7,7 +7,11 @@ Load data, and train the granular CNN network.
 
 Note
 ====
-Model and parameters are saved as 'model*.pkl' and 'params*.mat'
+Models are saved as 'model*.pkl'.
+
+Usage
+=====
+python3 gcnn_train.py <inpath> <outpath> <max epoch>
 """
 
 import os
@@ -72,8 +76,8 @@ def main():
         print(data_train.shape)
         print(label_train.shape)
         # Contruct the network
-        net = ConvNet(X_in=data_train, X_out=label_train, fc_nodes=[128])
-        net.gen_layers()
+        net = ConvNet(X_in=data_train, X_out=label_train)
+        net.gen_layers(droprate=0.5)
         # build
         print("Building the network...")
         net.cnn_build(max_epochs=numepoch,learning_rate=0.001,momentum=0.95)
