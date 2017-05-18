@@ -561,7 +561,7 @@ def cav_edge(img, sigma):
     return img_edge
 
 
-def cav_locate(img_edge, obspath=None, cntpath='cnt.reg',
+def cav_locate(img_re, obspath=None, cntpath='cnt.reg',
                regpath='cav_det.reg', rate=0.8):
     """
     Locate cavities in the edge detected image
@@ -573,8 +573,8 @@ def cav_locate(img_edge, obspath=None, cntpath='cnt.reg',
 
     Inputs
     ======
-    img_edge: np.ndarray
-        the edge detected image
+    img_re: np.ndarray
+        the reunited detected image
     obspath: str
         path of the observation, default as None
     cntpath: str
@@ -592,10 +592,10 @@ def cav_locate(img_edge, obspath=None, cntpath='cnt.reg',
     # Init
     cav_reg = []
     # Flip updown, differ between image and fits
-    img_edge = np.flipud(img_edge)
+    img_edge = np.flipud(img_re)
 
     # Get connectivity regions
-    props_label = measure.label(img_edge, connectivity=img_edge.ndim)
+    props_label = measure.label(img_re, connectivity=img_re.ndim)
     # Get connected region properties
     props = measure.regionprops(props_label)
 
@@ -611,7 +611,7 @@ def cav_locate(img_edge, obspath=None, cntpath='cnt.reg',
         cntpath = os.path.join(obspath, cntpath)
         regpath = os.path.join(obspath, regpath)
         # get physical centers
-        rows, cols = img_edge.shape
+        rows, cols = img_re.shape
         fp_cnt = open(cntpath, 'r')
         cnt_reg = fp_cnt.readline()
         cnt_reg = cnt_reg[4:-1]
