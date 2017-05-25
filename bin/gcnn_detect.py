@@ -5,15 +5,18 @@
 """
 Detect cavities with the trained granular cnn models.
 
+log
+===
+Removed the step edge detection.
+
 Steps
 =====
 [0] Load trained subclassifiers
 [1] Load sample set
 [2] Get estimated labels
 [3] Generate reunited mask image
-[4] Do edge detection
-[5] Locate cavity by the connected regions
-[6] Save results
+[4] Locate cavity by the connected regions
+[5] Save results
 """
 
 import os
@@ -56,7 +59,6 @@ def main():
 
     samplepath = os.path.join(obspath, matname)
     imgrecover = os.path.join(obspath,'img_re.png')
-    imgedge = os.path.join(obspath, 'img_edge.png')
     estpath = os.path.join(obspath, 'sample_est.mat')
 
     # load sample
@@ -73,18 +75,14 @@ def main():
     # get recovered image
     print('[3] Getting recovered images...')
     img_re = utils.img_recover(data, label, imgsize=(200,200), px_over=px_over)
-    # get edge detection
-    print('[4] Doing edge detection...')
-    img_edge = utils.cav_edge(img_re, sigma=3)
     # locate cavities
-    print('[5] Locating cavities...')
-    utils.cav_locate(img_edge, obspath=obspath, rate=0.8)
+    print('[4] Locating cavities...')
+    utils.cav_locate(img_re, obspath=obspath, rate=0.8)
 
     # save result
     print('[6] Saving results...')
     sio.savemat(estpath, {'data': data, 'label': label})
     misc.imsave(imgrecover, img_re)
-    misc.imsave(imgedge, img_edge * 255)
-
+   
 if __name__ == "__main__":
     main()
