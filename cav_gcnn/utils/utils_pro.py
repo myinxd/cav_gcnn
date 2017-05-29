@@ -441,8 +441,8 @@ def get_mark_multi(betapath, cav_mat, thrs=0.1, logflag=False, savepath=None):
     return img_mark
 
 
-def img_recover(data, label, imgsize=(400, 400), px_over=5):
-    """Revoer the image after classification.
+def img_recover(data, label, imgsize=(200, 200), px_over=5):
+    """Recover the image after classification.
 
     Inputs
     ======
@@ -461,7 +461,7 @@ def img_recover(data, label, imgsize=(400, 400), px_over=5):
         the recovered image
     """
     # Init
-    img = np.zeros(imgsize)
+    img = np.zeros(imgsize, dtype=bool)
 
     # Get params
     numsamples, boxsize = data.shape
@@ -474,58 +474,14 @@ def img_recover(data, label, imgsize=(400, 400), px_over=5):
     # recover
     for i in range(box_rows):
         for j in range(box_cols):
-            img[i * px_diff:i * px_diff + boxsize,
-                j * px_diff:j * px_diff + boxsize] += label[i * box_rows + j]
-
-    # Set a thrshold
-    thrs = 3
-    img[np.where(img < thrs)] = 0
-    img[np.where(img >= thrs)] = 1
-
-    return img
-
-
-def img_recover_multi(data, label, imgsize=(400, 400), px_over=5):
-    """Revoer the image after classification.
-
-    Inputs
-    ======
-    data: np.ndarray
-        the splitted samples data of the observation
-    label: np.ndarray
-        the estimated labels
-    imgsize: tuple
-        shape of the image
-    px_over: integer
-        the overlapped pixels
-
-    Output
-    ======
-    img: np.ndarray
-        the recovered image
-    """
-    # Init
-    img = np.zeros(imgsize)
-
-    # Get params
-    numsamples, boxsize = data.shape
-    boxsize = int(np.sqrt(boxsize))
-    # Number of boxes
-    px_diff = boxsize - px_over
-    box_rows = int(np.round((imgsize[0] - boxsize - 1) / px_diff)) + 1
-    box_cols = int(np.round((imgsize[1] - boxsize - 1) / px_diff)) + 1
-
-    # recover
-    for i in range(box_rows):
-        for j in range(box_cols):
-            if label[i * box_rows + j] == 2:
-                img[i * px_diff:i * px_diff + boxsize,
-                    j * px_diff:j * px_diff + boxsize] += 0
+            if label[i*box_rows+j] == 1:
+                label_temp = True
             else:
-                img[i * px_diff:i * px_diff + boxsize,
-                    j * px_diff:j * px_diff + boxsize] += label[i * box_rows + j]
+                label_temp = False
+            img[i * px_diff:i * px_diff + boxsize,
+                j * px_diff:j * px_diff + boxsize] += label_temp
 
-    return img
+    return img.astype(int)
 
 
 def cav_edge(img, sigma):
@@ -595,7 +551,7 @@ def cav_locate(img_re, obspath=None, cntpath='cnt.reg',
     img_edge = np.flipud(img_re)
 
     # Get connectivity regions
-    props_label = measure.label(img_re, connectivity=img_re.ndim)
+    props_label = measure.label(img_edge, connectivity=img_re.ndim)
     # Get connected region properties
     props = measure.regionprops(props_label)
 
