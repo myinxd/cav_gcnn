@@ -56,8 +56,7 @@ def main():
         inpath=inpath, ratio_train=0.9, ratio_val=0.2)
     # build the network
     # train
-    # numgra = x_train['numgra']
-    numgra = 5
+    numgra = x_train['numgra']
     cav_data = x_train['cav']
     ext_data = x_train['ext']
     bkg_data = x_train['bkg']
@@ -69,9 +68,11 @@ def main():
     for i in range(numgra):
         print("Training granular %d of %d..." % (i + 1, numgra))
         data_train = np.row_stack((bkg_data[0 + i::numgra, ],
-                                   cav_data, cav_data, ext_data))
+                                   cav_data, 
+                                   ext_data))
         label_train = np.row_stack((bkg_label[0 + i::numgra, ],
-                                    cav_label, cav_label, ext_label))
+                                    cav_label, 
+                                    ext_label))
         label_train = label_train[:,0].astype('int32')
         print(data_train.shape)
         print(label_train.shape)
