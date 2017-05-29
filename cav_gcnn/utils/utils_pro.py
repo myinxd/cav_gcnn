@@ -587,30 +587,3 @@ def cav_locate(img_re, obspath=None, cntpath='cnt.reg',
         fp.close()
 
     return cav_reg
-
-
-def get_man_re(img_re, img_mask, savepath=None):
-    """
-    Manually modify the estimated result, a fraud
-
-    Inputs
-    ======
-    img_re: np.ndarray
-        The recovered image
-    img_mask: np.ndarray
-        The mask image
-    savepath: str
-        Path to save the modified image
-
-    Output
-    ======
-    img_mod: np.ndarray
-        The modified image
-    """
-    img_mod = img_re * img_mask
-
-    if savepath is not None:
-        from scipy.misc import imsave
-        imsave(savepath, np.flipud(img_mod))
-
-    return img_mod

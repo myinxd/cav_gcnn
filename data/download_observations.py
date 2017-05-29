@@ -1,4 +1,4 @@
-# Copyright (C) 2016 Zhixian MA <zxma_sjtu@qq.com>
+# Copyright (C) 2017 Zhixian MA <zxma_sjtu@qq.com>
 
 """
 Fetch observations from chandra
@@ -55,9 +55,10 @@ def main():
         # change folder name
         print("mv %s %s" % (obsid, sample))
         os.system("mv %s %s" % (obsid, sample))
-
+    
+    # close of files
     f.close()
-
+    fo.close()
 
 if __name__ == "__main__":
     main()
