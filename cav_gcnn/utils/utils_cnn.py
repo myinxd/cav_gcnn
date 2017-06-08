@@ -35,7 +35,7 @@ import scipy.io as sio
 # import theano
 # import theano.tensor as T
 # import lasagne
-from ConvNet import ConvNet
+from ..convnet import ConvNet
 
 
 def load_data(inpath, ratio_train=0.8, ratio_val=0.2):
