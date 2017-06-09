@@ -6,7 +6,7 @@ Since AGN reveals quite lots of attracting physical phenomena, detecting of them
 ## Methods
 In this repository, we provide a toolbox namely `cav_gcnn` to detect cavities in the X-ray astronomical images observed by the [*Chandra* X-ray Observatory (CXO)](http://cxc.harvard.edu/). Our method is designed based on the state-of-the-art Convolutional Neural Network (CNN), as well as a strategy to handle the imbalanced dataset namely granularization.
 
-## Usage
+## Installation
 To utilize our toolbox on cavity detections, a Granular CNN (GCNN) model should be trained in advance and saved. Then, cavities in the new observations can be detected and marked with elliptical markers after preprocessing on the raw image data. In this work, 40 observations of 40 different objects were applied to train our GCNN classifiers, and a [snap](https://github.com/myinxd/cav_gcnn/blob/master/samples/samples.png) of them is illustrated.
 
 If you want to see the details of preprocessing and usage of our script, please refer to our paper<TODO> and the python codes. And the installation of the toolbox is as follows,
@@ -54,6 +54,21 @@ In addition, the computation can be accelerated by parallelly processing with GP
 - CUDA  
   https://developer.nvidia.com/cuda-downloads
 
+## Usage
+In addition to the GCNN package, we also provide two executable script for you to train the network, and detect cavities on new observations. The usages are as follows,
+- Training
+```sh
+$ gcnn_train <inpath> <outpath> <numepoch>
+```
+- Detection
+```sh
+$ gcnn_detect <obspath> <netpath> <numgra> <matname>
+```
+
+It should be noticed that the `matname` for the detection should be in such structure like, 
+- `sample_<boxsize>_<overlaps>.mat`
+
+More details of the usages can be referred by keyword `--help` after the commands.
 
 ## References
 - [Theano tutorial](http://www.deeplearning.net/software/theano/)
