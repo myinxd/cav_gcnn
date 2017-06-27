@@ -53,7 +53,7 @@ class ConvNet():
 
     def __init__(self, X_in=None, X_out=None, numclass=3, kernel_size=[2, 3, 4],
                  kernel_num=[15, 15, 15], pool_flag=[False, False, False],
-                 fc_nodes=None):
+                 fc_nodes=None, droprate=0.5, dropflag=True):
         """
         The initializer
         """
@@ -65,13 +65,15 @@ class ConvNet():
         self.pool_flag = pool_flag
         self.pool_size = 2
         self.fc_nodes = fc_nodes
+        self.droprate = 0.5
+        self.dropflag = True
 
     def gen_BatchIterator(self, batch_size=100, shuffle=True):
         """Generate the batch iterator"""
         B = BatchIterator(batch_size=batch_size, shuffle=shuffle)
         return B
 
-    def gen_layers(self, droprate=0.5):
+    def gen_layers(self):
         """Construct the layers"""
 
         # Init <TODO>
@@ -104,7 +106,9 @@ class ConvNet():
                 rows = rows // 2
                 cols = cols // 2
         # dropout
-        l_drop = (DropoutLayer, {'p': droprate})
+        if not self.dropflag:
+            self.droprate = 0
+        l_drop = (DropoutLayer, {'p': self.droprate})
         # self.layers.append(l_drop)
         # full connected layer
         num_fc = rows * cols * self.kernel_num[-1]
@@ -194,6 +198,7 @@ class ConvNet():
             img = img.reshape(1, 1, rows, cols)
         else:
             print("The shape of image should be 2 or 3 d")
+        self.dropflag = False
         label_pred = self.net.predict(img)
 
         return label_pred
