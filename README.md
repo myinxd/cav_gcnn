@@ -87,5 +87,18 @@ Unless otherwise declared:
 - Third-party codes and products used are distributed under their own licenses.
 
 ## Citation
-<TODO>
+This work has been accepted and advancely published, which can be cited under the bibtex style as follows,
+```tex
+@article{Ma2017cavity,
+  title={An approach to detect cavities in X-ray astronomical images using granular convolutional neural networks},
+  author={Ma, Z., Zhu, J., Li, W., and Xu, H.},
+  journal={IEICE TRANSACTIONS on Information and Systems},
+  volume={100},
+  number={10},
+  pages={xxx--xxx},
+  year={2017},
+  doi={10.1587/transinf.2017EDP7079},
+  publisher={The Institute of Electronics, Information and Communication Engineers}
+}
+```
 
