@@ -7,7 +7,7 @@ Since AGN reveals quite lots of attracting physical phenomena, detecting of them
 In this repository, we provide a toolbox namely `cav_gcnn` to detect cavities in the X-ray astronomical images observed by the [*Chandra* X-ray Observatory (CXO)](http://cxc.harvard.edu/). Our method is designed based on the state-of-the-art Convolutional Neural Network (CNN), as well as a strategy to handle the imbalanced dataset namely granularization.
 
 ## Installation
-To utilize our toolbox on cavity detections, a Granular CNN (GCNN) model should be trained in advance and saved. Then, cavities in the new observations can be detected and marked with elliptical markers after preprocessing on the raw image data. In this work, 40 observations of 40 different objects were applied to train our GCNN classifiers, and a [snap](https://github.com/myinxd/cav_gcnn/blob/master/samples/samples.png) of them is illustrated.
+To utilize our toolbox on cavity detections, a Granular CNN (GCNN) model should be trained in advance and saved. Then, cavities in the new observations can be detected and marked with elliptical markers after preprocessing on the raw image data. In this work, 40 observations of 40 different objects were applied to train our GCNN classifiers, and a [snap](https://github.com/myinxd/cav_gcnn/blob/master/samples/objects.png) of them is illustrated.
 
 If you want to see the details of preprocessing and usage of our script, please refer to our paper<TODO> and the python codes. And the installation of the toolbox is as follows,
 
